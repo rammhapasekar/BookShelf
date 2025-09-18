@@ -19,17 +19,34 @@
 import SwiftUI
 
 struct BookListView: View {
-  var books: [Book]
+//  var books: [Book]
+  @StateObject fileprivate var viewModel = BooksViewModel()
   var body: some View {
-    List(books){ book in
-      BookRowView(book: book)
+    NavigationStack {
+      List($viewModel.books){ $book in
+        BookRowView(book: $book)
+      }.overlay{
+        if viewModel.fetching{
+          ProgressView("Fetching data, Please wait...")
+            .progressViewStyle(CircularProgressViewStyle(tint: .accentColor))
+        }
+      }
+      .animation(.default, value: viewModel.books)
+      .task {
+        await viewModel.fetchData()
+      }
+      .refreshable {
+        await viewModel.refresh()
+      }
+      
+      .listStyle(.plain)
+      .navigationTitle("BookShelf")
     }
-    .listStyle(.plain)
   }
 }
 
 struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
-    BookListView(books: Book.sampleBooks)
+    BookListView()
   }
 }

@@ -18,12 +18,14 @@
 
 import Foundation
 
-struct Book: Identifiable {
+struct Book: Identifiable, Equatable {
   var id = UUID().uuidString
   var title: String
   var author: String
   var isbn: String
   var pages: Int
+  var isRead: Bool = false
+  var isFavourite: Bool = false
 }
 
 extension Book {
