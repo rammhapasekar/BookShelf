@@ -6,11 +6,29 @@
 //
 
 import Foundation
+import Combine
 
 class BooksViewModel: ObservableObject{
-  //  @Published var books: [Book] = Book.sampleBooks
+  @Published private var originalBooks = Book.sampleBooks
   @Published var books = [Book]()
   @Published var fetching =  false
+//  @Published var searchTerm: String = ""
+//  
+//  init() {
+//    Publishers.CombineLatest($originalBooks, $searchTerm)
+//      .map { books, searchTerm in
+//        books.filter { book in
+//          searchTerm.isEmpty ? true : (
+//            book.title.matches(searchTerm) ||
+//            book.author.matches(searchTerm)
+//          )
+//        }
+//      }
+//      .assign(to: &$books)
+////      .sink { [weak self] value in
+////          self?.books = value
+////      }
+//  }
   
   @MainActor
   func fetchData() async{

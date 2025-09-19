@@ -23,9 +23,23 @@ struct BookListView: View {
   @StateObject fileprivate var viewModel = BooksViewModel()
   var body: some View {
     NavigationStack {
-      List($viewModel.books){ $book in
-        BookRowView(book: $book)
-      }.overlay{
+//      List($viewModel.books){ $book in
+//        BookRowView(book: $book)
+      List{
+        ForEach($viewModel.books) { $book in
+          BookRowView(book: $book)
+        }
+        .onDelete{ indexSet in
+          viewModel.books.remove(atOffsets: indexSet)
+        }
+        .onMove{ indexSet, index in
+          viewModel.books.move(fromOffsets: indexSet, toOffset: index)
+        }
+      }
+      .toolbar{
+        EditButton()
+      }
+      .overlay{
         if viewModel.fetching{
           ProgressView("Fetching data, Please wait...")
             .progressViewStyle(CircularProgressViewStyle(tint: .accentColor))
@@ -38,6 +52,8 @@ struct BookListView: View {
       .refreshable {
         await viewModel.refresh()
       }
+//      .searchable(text: $viewModel.searchTerm)
+//      .autocapitalization(.none)
       
       .listStyle(.plain)
       .navigationTitle("BookShelf")
