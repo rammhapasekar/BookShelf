@@ -20,9 +20,14 @@ import SwiftUI
 
 @main
 struct BookShelfApp: App {
+  @StateObject var bookViewModel = BooksViewModel()
+  
   var body: some Scene {
     WindowGroup {
-      BookListView()
+      NavigationStack{
+        BookListView(viewModel: bookViewModel)
+          .navigationTitle("Books")
+      }
     }
   }
 }

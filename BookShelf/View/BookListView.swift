@@ -20,7 +20,7 @@ import SwiftUI
 
 struct BookListView: View {
 //  var books: [Book]
-  @StateObject fileprivate var viewModel = BooksViewModel()
+  @ObservedObject var viewModel: BooksViewModel
   var body: some View {
     NavigationStack {
 //      List($viewModel.books){ $book in
@@ -56,13 +56,13 @@ struct BookListView: View {
 //      .autocapitalization(.none)
       
       .listStyle(.plain)
-      .navigationTitle("BookShelf")
+      .navigationTitle("Books")
     }
   }
 }
 
 struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
-    BookListView()
+    BookListView(viewModel: BooksViewModel())
   }
 }

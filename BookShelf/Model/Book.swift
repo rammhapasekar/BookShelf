@@ -18,7 +18,7 @@
 
 import Foundation
 
-struct Book: Identifiable, Equatable {
+struct Book: Hashable,Identifiable {
   var id = UUID().uuidString
   var title: String
   var author: String
